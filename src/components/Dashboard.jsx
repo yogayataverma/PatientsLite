@@ -1,14 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiFileOn } from "react-icons/ci";
+import db from "../dbconfig/db";
 
 function Dashboard() {
-  const [patients] = useState([
+  const [patients, setPatients] = useState([]);
 
-  ]);
+  useEffect(() => {
+    const fetchPatients = async () => {
+      const { rows } = await db.query(`
+            SELECT
+              id,
+              firstname      AS "firstName",
+              lastname       AS "lastName",
+              dateofbirth    AS "dateOfBirth",
+              gender,
+              email,
+              phone,
+              address,
+              medicalhistory AS "medicalHistory",
+              allergies
+            FROM patients;
+          `);
+      setPatients(rows);
+    };
 
-  const truncateText = (text, maxLength = 30) => {
-    if (text.length <= maxLength) return text;
-    return text.slice(0, maxLength) + "...";
+    fetchPatients();
+  }, []);
+
+  const truncateText = (text) => {
+    if (!text) return "";
+    return text;
   };
 
   return (

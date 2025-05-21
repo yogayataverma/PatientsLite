@@ -4,6 +4,7 @@ import { CiUser } from "react-icons/ci";
 import { CiSquareCheck } from "react-icons/ci";
 import { CiFileOn } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
+import db from "../dbconfig/db";
 
 function PatientForm() {
   const [formData, setFormData] = useState({
@@ -26,9 +27,44 @@ function PatientForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      console.log("Submitting form data:", formData);
+      await db.query(
+        `INSERT INTO patients
+           (firstname, lastname, dateofbirth,
+            gender, email, phone, address,
+            medicalhistory, allergies)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9);`,
+        [
+          formData.firstName,
+          formData.lastName,
+          formData.dateOfBirth,
+          formData.gender,
+          formData.email,
+          formData.phone,
+          formData.address,
+          formData.medicalHistory,
+          formData.allergies,
+        ]
+      );
+      setFormData({
+        firstName: "",
+        lastName: "",
+        dateOfBirth: "",
+        gender: "",
+        email: "",
+        phone: "",
+        address: "",
+        medicalHistory: "",
+        allergies: "",
+      });
+      alert("Patient data saved successfully!");
+    } catch (error) {
+      console.error("Error inserting patient data:", error);
+      alert("Failed to save patient data. Please try again.");
+    }
   };
 
   return (
