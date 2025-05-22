@@ -4,10 +4,12 @@ import { CiUser } from "react-icons/ci";
 import { CiSquareCheck } from "react-icons/ci";
 import { CiFileOn } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 import db from "../dbconfig/db";
 import bus from "../utils/tabBus";   
 
 function PatientForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -65,6 +67,7 @@ function PatientForm() {
         allergies: "",
       });
       alert("Patient data saved successfully!");
+      navigate('/');
     } catch (error) {
       console.error("Error inserting patient data:", error);
       alert("Failed to save patient data. Please try again.");

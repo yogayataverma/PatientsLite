@@ -6,8 +6,11 @@ import { useCallback } from "react";
 
 function Dashboard() {
   const [patients, setPatients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchPatients = useCallback(async () => {
+    try {
+      setIsLoading(true);
       const { rows } = await db.query(`
         SELECT
           id,
@@ -23,18 +26,23 @@ function Dashboard() {
         FROM patients;
       `);
       setPatients(rows);
-    }, []);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
   
-    useEffect(() => {
-      fetchPatients();
-      const onMessage = (evt) => {
-        if (evt.data?.type === 'PATIENT_ADDED') {
-          fetchPatients();
-        }
-      };
-      bus.addEventListener('message', onMessage);
-      return () => bus.removeEventListener('message', onMessage);
-    }, [fetchPatients]);
+  useEffect(() => {
+    fetchPatients();
+    const onMessage = (evt) => {
+      if (evt.data?.type === 'PATIENT_ADDED') {
+        fetchPatients();
+      }
+    };
+    bus.addEventListener('message', onMessage);
+    return () => bus.removeEventListener('message', onMessage);
+  }, [fetchPatients]);
 
   useEffect(() => {
     const onMessage = (evt) => {
@@ -50,6 +58,31 @@ function Dashboard() {
     if (!text) return "";
     return text;
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#F8F9FA] to-[#E9ECEF] py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold text-[#212529]">
+              Patient Dashboard
+            </h1>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-16 text-center">
+            <div className="max-w-md mx-auto flex flex-col items-center">
+              <div className="relative">
+                <div className="w-16 h-16 border-4 border-blue-200 rounded-full"></div>
+                <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+              </div>
+              <h3 className="text-xl font-semibold text-[#212529] mt-4">
+                Loading...
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F8F9FA] to-[#E9ECEF] py-8 px-4 sm:px-6 lg:px-8">
@@ -72,7 +105,7 @@ function Dashboard() {
                     <th scope="col" className="w-40 px-6 py-3 text-left text-xs font-medium text-[#6C757D] uppercase tracking-wider">
                       Patient Name
                     </th>
-                    <th scope="col" className="w-32 px-6 py-3 text-left text-xs font-medium text-[#6C757D] uppercase tracking-wider">
+                    <th scope="col" className="w-48 px-6 py-3 text-left text-xs font-medium text-[#6C757D] uppercase tracking-wider">
                       Date of Birth
                     </th>
                     <th scope="col" className="w-24 px-6 py-3 text-left text-xs font-medium text-[#6C757D] uppercase tracking-wider">
@@ -120,14 +153,17 @@ function Dashboard() {
                           <div className="truncate" title={patient.email}>
                             {truncateText(patient.email)}
                           </div>
-                          <div className="truncate" title={patient.phone}>
-                            {truncateText(patient.phone)}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[#CED4DA]">|</span>
+                            <div className="truncate" title={patient.phone}>
+                              {truncateText(patient.phone)}
+                            </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm text-[#6C757D]">
-                          <div className="truncate" title={patient.address}>
+                          <div className="whitespace-normal break-words max-w-[200px]" title={patient.address}>
                             {truncateText(patient.address)}
                           </div>
                         </div>

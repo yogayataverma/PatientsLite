@@ -7,5 +7,16 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
     exclude: ['@electric-sql/pglite']
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        format: 'es'
+      }
+    }
+  },
+  worker: {
+    format: 'es',
+    plugins: []
   }
 })
