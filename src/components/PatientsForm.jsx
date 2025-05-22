@@ -5,6 +5,7 @@ import { CiSquareCheck } from "react-icons/ci";
 import { CiFileOn } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
 import db from "../dbconfig/db";
+import bus from "../utils/tabBus";   
 
 function PatientForm() {
   const [formData, setFormData] = useState({
@@ -49,6 +50,9 @@ function PatientForm() {
           formData.allergies,
         ]
       );
+      
+      bus.postMessage({ type: 'PATIENT_ADDED' });
+
       setFormData({
         firstName: "",
         lastName: "",

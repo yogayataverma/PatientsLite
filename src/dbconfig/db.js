@@ -1,20 +1,9 @@
-import { PGlite } from "@electric-sql/pglite";
+import { PGliteWorker } from '@electric-sql/pglite/worker';
+import { live } from '@electric-sql/pglite/live';
 
-const db = new PGlite("idb://patients.db");
-
-await db.query(`
-    CREATE TABLE IF NOT EXISTS patients (
-    id               serial PRIMARY KEY,
-    firstname      text,
-    lastname       text,
-    dateofbirth    text,
-    gender           text,
-    email            text,
-    phone            text,
-    address          text,
-    medicalhistory text,
-    allergies        text
-    );
-`);
+const db = new PGliteWorker(
+  new Worker(new URL('./pglite-worker.js', import.meta.url), { type: 'module' }),
+  { extensions: { live } }
+);
 
 export default db;

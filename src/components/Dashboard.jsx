@@ -1,30 +1,49 @@
 import { useState, useEffect } from "react";
 import { CiFileOn } from "react-icons/ci";
 import db from "../dbconfig/db";
+import bus from "../utils/tabBus";
+import { useCallback } from "react";
 
 function Dashboard() {
   const [patients, setPatients] = useState([]);
 
-  useEffect(() => {
-    const fetchPatients = async () => {
+  const fetchPatients = useCallback(async () => {
       const { rows } = await db.query(`
-            SELECT
-              id,
-              firstname      AS "firstName",
-              lastname       AS "lastName",
-              dateofbirth    AS "dateOfBirth",
-              gender,
-              email,
-              phone,
-              address,
-              medicalhistory AS "medicalHistory",
-              allergies
-            FROM patients;
-          `);
+        SELECT
+          id,
+          firstname      AS "firstName",
+          lastname       AS "lastName",
+          dateofbirth    AS "dateOfBirth",
+          gender,
+          email,
+          phone,
+          address,
+          medicalhistory AS "medicalHistory",
+          allergies
+        FROM patients;
+      `);
       setPatients(rows);
-    };
+    }, []);
+  
+    useEffect(() => {
+      fetchPatients();
+      const onMessage = (evt) => {
+        if (evt.data?.type === 'PATIENT_ADDED') {
+          fetchPatients();
+        }
+      };
+      bus.addEventListener('message', onMessage);
+      return () => bus.removeEventListener('message', onMessage);
+    }, [fetchPatients]);
 
-    fetchPatients();
+  useEffect(() => {
+    const onMessage = (evt) => {
+      if (evt.data?.type === 'PATIENT_ADDED') {
+        console.log('Another tab just added a patient 🎉');
+      }
+    };
+    bus.addEventListener('message', onMessage);
+    return () => bus.removeEventListener('message', onMessage);
   }, []);
 
   const truncateText = (text) => {

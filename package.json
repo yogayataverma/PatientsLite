@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.2",
+    "@electric-sql/pglite-react": "^0.2.20",
+    "@electric-sql/pglite-sync": "^0.3.5",
     "@tailwindcss/vite": "^4.1.7",
     "dotenv": "^16.5.0",
     "react": "^19.1.0",
