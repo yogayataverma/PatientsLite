@@ -128,27 +128,27 @@ function Dashboard() {
                 <tbody className="bg-white divide-y divide-[#CED4DA]">
                   {patients.map((patient, index) => (
                     <tr key={patient.id} className="hover:bg-[#F8F9FA]">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm font-medium text-[#212529] ml-2">
                           {index + 1}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm text-[#6C757D]">
                           {patient.firstName} {patient.lastName}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm text-[#6C757D]">
                           {patient.dateOfBirth}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm text-[#6C757D]">
                           {patient.gender}
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm text-[#6C757D]">
                           <div className="truncate" title={patient.email}>
                             {truncateText(patient.email)}
@@ -161,21 +161,21 @@ function Dashboard() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm text-[#6C757D]">
                           <div className="whitespace-normal break-words max-w-[200px]" title={patient.address}>
                             {truncateText(patient.address)}
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm text-[#6C757D]">
                           <div className="truncate" title={patient.medicalHistory}>
                             {truncateText(patient.medicalHistory)}
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 h-24 align-middle">
                         <div className="text-sm text-[#6C757D]">
                           <div className="truncate" title={patient.allergies}>
                             {truncateText(patient.allergies)}

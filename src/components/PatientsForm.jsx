@@ -5,6 +5,7 @@ import { CiSquareCheck } from "react-icons/ci";
 import { CiFileOn } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 import db from "../dbconfig/db";
 import bus from "../utils/tabBus";   
 
@@ -54,7 +55,7 @@ function PatientForm() {
       );
       
       bus.postMessage({ type: 'PATIENT_ADDED' });
-
+      
       setFormData({
         firstName: "",
         lastName: "",
@@ -66,11 +67,13 @@ function PatientForm() {
         medicalHistory: "",
         allergies: "",
       });
-      alert("Patient data saved successfully!");
-      navigate('/');
+      toast.success('Patient data saved successfully!');
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
     } catch (error) {
       console.error("Error inserting patient data:", error);
-      alert("Failed to save patient data. Please try again.");
+      toast.error('Failed to save patient data. Please try again.');
     }
   };
 
