@@ -237,7 +237,7 @@ function PatientForm() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="Enter phone number"
+                  placeholder="Enter phone number (10 digits)"
                   pattern="[0-9]{10}"
                   className="block w-full rounded-lg border-[#CED4DA] shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150 text-base py-3 px-4 placeholder-[#6C757D]"
                   required
