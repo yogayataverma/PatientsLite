@@ -126,11 +126,11 @@ function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-[#CED4DA]">
-                  {patients.map((patient) => (
+                  {patients.map((patient, index) => (
                     <tr key={patient.id} className="hover:bg-[#F8F9FA]">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-[#212529] ml-2">
-                          {patient.id}
+                          {index + 1}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
