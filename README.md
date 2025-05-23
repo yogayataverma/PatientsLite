@@ -42,3 +42,7 @@ The application will be available at `http://localhost:5173`
 2. **State Management**
    - Had to implement a robust state synchronization mechanism between different browser tabs
    - Ensuring data consistency across multiple components
+
+## Live Demo
+
+Visit the live application at: [Patients Lite](https://patientslite.netlify.app/)
